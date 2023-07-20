@@ -48,12 +48,16 @@ def index():
 
 @app.route('/pdf_preview', methods=['GET'])
 def pdf_preview():
-    pdf_url = request.args.get('pdf_url')
+    pdf_url = request.args.get('url')
+    zoom = request.args.get('zoom')
+
+    if zoom is None:
+        zoom = 1
 
     if pdf_url is None:
         return "No PDF URL provided.", 400
 
-    time_taken, img_io = pdf_to_png(pdf_url)
+    time_taken, img_io = pdf_to_png(pdf_url, int(zoom))
 
     print(f"Time taken to generate the image: {time_taken} seconds")
 
